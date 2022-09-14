@@ -1,11 +1,13 @@
 import datetime
+from random import randint
 
 
 def main():
-    a = [i for i in range(100000000)]
+    a = [randint(0, 100000000) for i in range(1000000)]
     print('a start')
+    checked_list = [randint(0, 100000000) for i in range(100)]
     start_a = datetime.datetime.now()
-    for temp in (333, 666, 999):
+    for temp in checked_list:
         if temp in a:
             print(f'temp:{temp} in a')
     print('a end')
@@ -14,7 +16,7 @@ def main():
     b = set(a)
     print('b start')
     start_b = datetime.datetime.now()
-    for temp in (333, 666, 999):
+    for temp in checked_list:
         if temp in b:
             print(f'temp:{temp} in b')
     print('b end')
