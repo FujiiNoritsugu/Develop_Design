@@ -9,12 +9,61 @@ class ArgNumber(Enum):
     FOUR = 4
     FIVE = 5
     STOP = 999
+    OTHER = -1
+
+
+def param_check(check_fn, param):
+    try:
+        return check_fn(param)
+    except Exception:
+        return ArgNumber.OTHER
+
+
+def make_fn():
+    """内部にクロージャでデータを蓄えておく関数
+
+    Returns:
+        _type_: 入力用の関数と出力用の関数
+    """
+    # 内部のデータはリストで保持する
+    data_list = []
+
+    def add_value(value):
+        data_list.append(value)
+
+    def print_data():
+        # 出力時にセットに変換して重複を失くす
+        result_list = set(data_list)
+        for result in result_list:
+            print(f"{result}\n")
+
+    return add_value, print_data
 
 
 def main(argv):
+
+    # param_checの最初の引数をArgNumberに変換するラムダ式で渡す
+    def check(x):
+        return param_check(lambda x: ArgNumber(int(x)), x)
+
+    # 内部にクロージャでデータを蓄えておく関数を作成する
+    add_value, print_data = make_fn()
+
+    # 引数をジェネレータでチェックして値を格納する
     for arg in (data for data in argv):
-        ArgNumber(arg)
+        arg = check(arg)
+        if arg is ArgNumber.STOP:
+            add_value("終わり")
+            break
+        elif arg is ArgNumber.OTHER:
+            add_value("1～5の数値以外")
+        else:
+            add_value(arg.name)
+
+    # 結果を出力する
+    print_data()
 
 
 if __name__ == '__main__':
-    main(sys.argv)
+    # コマンドラインのプログラムの引数として与えられた数値を引数にする
+    main(sys.argv[1:])
