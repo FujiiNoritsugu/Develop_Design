@@ -34,8 +34,9 @@ def make_fn():
     def print_data():
         # 出力時にセットに変換して重複を失くす
         result_list = set(data_list)
+        print("コマンドライン引数には999までに以下の数字が含まれていました。")
         for result in result_list:
-            print(f"{result}\n")
+            print(f"{result}")
 
     return add_value, print_data
 
@@ -53,7 +54,7 @@ def main(argv):
     for arg in (data for data in argv):
         arg = check(arg)
         if arg is ArgNumber.STOP:
-            add_value("終わり")
+            # 終わりの数字が含まれていればそこでストップ
             break
         elif arg is ArgNumber.OTHER:
             add_value("1～5の数値以外")
