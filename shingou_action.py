@@ -8,9 +8,9 @@ class Shingou(Enum):
     YELLOW = 3
 
 
-def act_shingou(color):
+def act_shingou(color:int) -> Shingou:
     # 信号機の色に対応しているかチェック
-    if color in (data.value for data in Shingou):
+    if color not in (data.value for data in Shingou):
         raise Exception('信号機の色に対応していません')
     # 信号機のEnumに変換
     shingou = Shingou(color)
